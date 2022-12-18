@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Mobile!</title>
+  </head>
+  <body>
+  <div id="show"></div>
+  
+
+  </div>
+  
+    <!-- Optional JavaScript -->
+    <script type="text/javascript">
+      const json=[
+      {"image":"https://i.ibb.co/cLV4RvX/google-pixel-3.jpg","RAM":["8 GB"],"ROM":["256 GB","128 GB","64 GB"],"name":"Pixel  3","brand":"Google","colors":["Blue","Black","White"]},{"image":"https://i.ibb.co/160YSpk/mi-redmi-5.jpg","RAM":["6 GB","4 GB"],"ROM":["128 GB","64 GB"],"name":"Redmi  5","brand":"Xiaomi","colors":["Red","Gold","Black","White"]},{"image":"https://i.ibb.co/y6dk6n1/mi-redmi-y2.jpg","RAM":["3 GB"],"ROM":["32 GB"],"name":"Redmi  Y2","brand":"Xiaomi","colors":["Rose  Gold","Gold","Black","White"]},{"image":"https://i.ibb.co/McQMDF8/motorola-moto-e5-plus.jpg","RAM":["6 GB"],"ROM":["128 GB","64 GB"],"name":"Moto E5  Plus","brand":"Motorola","colors":["Grey","Black","Pink"]},{"image":"https://i.ibb.co/1QGFW28/nokia-6-1.jpg","RAM":["6 GB"],"ROM":["128 GB"],"name":"6.1","brand":"Nokia","colors":["Grey","Black","Blue"]},{"image":"https://i.ibb.co/vJbK6qM/realme-c1.jpg","RAM":["6 GB","4 GB","3 GB"],"ROM":["128 GB","64 GB"],"name":"C1","brand":"Realme","colors":["Red","Gold","Black","White","Grey"]},{"image":"https://i.ibb.co/F6c80H6/realme-x.jpg","RAM":["4 GB","3 GB"],"ROM":["64GB","32  GB"],"name":"X","brand":"Realme","colors":["Rose  Gold","Gold","Black","White","Pink"]},{"image":"https://i.ibb.co/TWLNRyW/samsung-galaxy-s10-plus.jpg","RAM":["6 GB","4 GB"],"ROM":["64 GB"],"name":"Galaxy S10","brand":"Samsung","colors":["Red","Gold","White"]},{"image":"https://i.ibb.co/ScZsMtW/vivo-z1-pro.jpg","RAM":["8 GB","6  GB"],"ROM":["128 GB","64 GB"],"name":"Z1 Pro","brand":"Vivo","colors":["White","Deep Blue"]}];
+       const ramOptions =["8 GB", "6 GB", "4 GB", "3 GB", "2 GB"];
+       const romOptions =["256 GB","128 GB","64 GB","32 GB","16 GB"];
+       const colorsArr =["Rose Gold","Gold","Black","Grey","White","Red","Pink","Blue","Deep Blue"];
+       const brands =["Google","Samsung","Oppo","Nokia","Xiaomi","Realme","Apple"];
+       let myCart=[];
+       let error=[];
+       let myMobile={};
+       let indexEdit=-1;
+      show();
+      function show(active=0){
+        let str= makeNavbar(active);
+        active==0 ? str+=wlc(): str+='';
+        active===1 ? str+=mobileTable() : str+='' ;
+        active===2 ? str+=addNewMobile() : str+='' ;
+        active===3 ? str+=showCart() : str+='';
+        document.getElementById('show').innerHTML=str;
+      }
+      function wlc(){
+        return str = '<div style="font-size:400%;position:relative;top:200px;text-align:center;">Welcome to MobileStore</div>'
+      }
+
+      function makeNavbar(active=0){
+          let str='<nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
+          str+='<a class="navbar-brand" href="#">MobileStore</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarNav">';
+          str+='<ul class="navbar-nav">';
+          let active1= active === 1 ? 'active' : '';
+          let active2= active === 2 ? 'active' : '';
+          let active3= active === 3 ? 'active' : '';
+
+          str+='<li class="nav-item '+active1+'">';
+         str+='<a class="nav-link" href="#" onclick="mobile()">Mobiles<span class="sr-only">(current)</span></a>';
+          str+='</li>';
+        str+='<li class="nav-item '+active2+'">';
+        str+='<a class="nav-link" href="#" onclick="addmobile()">Add a Mobile</a>';
+        str+='</li>';
+        str+='<li class="nav-item '+active3+'">';
+        str+='<a class="nav-link" href="#" onclick="cart()">Cart</a>';
+        str+='</li>';
+        str+='</ul>';
+        str+='</div>';
+        str+='</nav>';
+        return str;
+      }
+      function mobile(){
+        show(1);
+      }
+      function addmobile(){
+          myMobile={};
+          indexEdit=-1;
+        show(2);
+      }
+      function cart(){
+        show(3);
+      }
+      function showCart(){
+        if(myCart.length==0){
+          let str='<<div style="font-size:400%;position:relative;top:50px;text-align:center;">Cart is Empty. Go to Mobiles to add Product</div>'
+        return str;
+        }
+        let arr=myCart.map((ele,index)=>{
+          let str='<div class="col-6 text-center"><img class="h-15 img img-fluid" style="height: 150px;" src="'+ele.image+'"></div>'
+        str+='<div class="col-6 text-center"><span>'+ele.name+' from '+ele.brand+'</span><br/><span>Color:'+ele.colors+',RAM:'+ele.RAM+',ROM: '+ele.ROM+'</span><br/><button class="btn btn-danger" onclick="remove(\''+index+'\')">Remove from cart</button></div>';
+        return str;
+      })
+          let head='<div class="row border">';
+          head+=arr.join('');
+          head+='</div>';
+        return head;
+      }
+      function remove(index){
+        myCart.splice(index,1);
+        show(3);
+
+      }
+      function mobileTable(){
+        let arr=json.map((ele,index)=>{
+         let {image,RAM,ROM,name,brand,colors}=ele;
+          let str='<li class="list-group" onclick="view(\''+name+'\',\''+index+'\')">';
+        str+='<div class="card">';
+        str+='<div class="row">';
+        str+='<div class="card-group">';
+        str+='<div class="col-6>"';
+        str+='<div class= class="h-25 d-block text-center" style="width: 120px"><img class="img-fluid img-thumbnail" alt="" src="'+image+'"></div>';
+        str+='</div>';
+        str+='<div class="text-center col-6"><ul><li class="list-group">Name:'+name+'</li><li class="list-group">Brand:'+brand+'</li class="list-group"><li class="list-group">Color:'+colors.join(',')+'</li><li class="list-group">RAM:'+RAM.join(',')+'</li><li class="list-group">ROM:'+ROM.join(',')+'</li></ul></div>'
+        str+='</div>';
+        str+='</div>';
+        str+='</li>';
+        return str;
+        })
+
+        let head='<div class="row mr-5 ml-5">';
+            head+='<div class="col-4">';
+            head+='<ul class="form-list none">';
+            head+=arr.join('');
+            head+='</ul> ';
+            head+='</div>';
+            head+='<div class="col-8"><div id="display"></div></div>';
+            head+='</div>';
+            return head;
+      }
+      function view(name,index){
+        let arrFind=json.find(ele=>ele.name==name);
+        let str='<div class="text-center"><img src="'+arrFind.image+'" style="height:500px"></div>';
+        str+='<div class="text-center display-5"><h3>'+arrFind.name+'</h3></div><br/>';
+        str+='<div class="row"><div class="col">'+makeDD(arrFind.RAM,'ram','Select RAM',)+'</div><div class="col">'+makeDD(arrFind.ROM,'rom','Select ROM')+'</div><div class="col">'+makeDD(arrFind.colors,'color','Select Color')+'</div></div><br/>';
+        str+='<div class="text-center"><button class="btn btn-primary text-center" onclick="addCart('+index+')">Add to Cart</button><br/><span><button class="btn btn-secondary text-center" onclick="edit('+index+')">Edit</button></span></div>';
+        document.getElementById('display').innerHTML=str;
+    }
+    function edit(index){
+      indexEdit=index;
+      myMobile=json[index];
+      show(2)
+
+    }
+    function addCart(index){
+      let sel1=document.getElementById('ram').value;
+      let sel2=document.getElementById('rom').value;
+      let sel3=document.getElementById('color').value;
+      if(sel1=='Select RAM' || sel2=='Select ROM' || sel3=='Select Color')
+       return  alert('Choose All three Option');
+      data={image:json[index].image,RAM:sel1,ROM:sel2,name:json[index].name,brand:json[index].brand,colors:sel3};
+      console.log(data);
+      for(i=0;i<myCart.length;i++)
+      if(myCart[i].name==data.name)
+       return alert('Mobile already in cart');
+      myCart.push(data);
+      return alert('Complete! Add to Cart');
+    }
+    function addNewMobile(){
+      let {image,RAM,ROM,name,brand,colors}=myMobile;
+      let title='<h3 class="pl-5">Add a New Mobile</h3>';
+      let str='<div class="pl-5 pr-5">';
+       str+=makeTextBox('txt1','Product Name','Enter Product name',name,error.name);
+       str+=makeTextBox('txt2','Product Image','Enter URL of Product Image',image,error.image);
+       str+=makeDD(brands,'brandType','Select Brand',brand,error.brand);
+       str+=makeCheckbox(ramOptions,'Choose RAM Option','ram0',RAM,error.RAM);
+       console.log(ramOptions,'Choose RAM Option','ram0',RAM,error.RAM);
+       console.log(romOptions,'Choose ROM Option','rom0',ROM,error.ROM);
+       str+=makeCheckbox(romOptions,'Choose ROM Option','rom0',ROM,error.ROM);
+       str+=makeCheckbox(colorsArr,'Choose Color Option','color0',colors,error.colors);     
+       str+='<div><button class="btn btn-primary" onclick="addProduct()">'+ (indexEdit >= 0 ? "Edit Product" :"Add Product") +'</button></div>';
+      return title+str+'</div>';
+    }
+    function addProduct(){
+      let image=document.getElementById('txt2').value;
+      let name=document.getElementById('txt1').value;
+      let brand=document.getElementById('brandType').value;
+      let ram=document.getElementsByName('ram0');
+        let ramArr=[];
+      for(i=0;i<ram.length;i++){
+        if(ram[i].checked)
+          ramArr.push(ram[i].value);
+      }
+      let rom=document.getElementsByName('rom0');
+      let romArr=[];
+      for(i=0;i<rom.length;i++){
+        if(rom[i].checked)
+          romArr.push(rom[i].value);
+      }
+      let color=document.getElementsByName('color0');
+      let colorArr=[];
+      for(i=0;i<color.length;i++){
+        if(color[i].checked)
+          colorArr.push(color[i].value);
+      }
+      let data={image:image,RAM:ramArr,ROM:romArr,name:name,brand:brand,colors:colorArr};
+      console.log(data);
+        addNewMobile();
+
+      if(validation(data)){
+        indexEdit>=0 ? json[indexEdit]=data : json.push(data);
+        show(1);
+      }
+      else{
+        myMobile=data;
+        console.log(error);
+        console.log(data);
+        show(2)
+      }
+
+
+    }
+    function validation(pr){
+      error.image = pr.image ? '' : 'Image Mandatory';
+      error.name = pr.name ? '' : 'Name Mandatory';
+      error.RAM = pr.RAM.length==0 ? 'Select atleast one':'';
+      error.ROM = pr.ROM.length==0 ? 'Select atleast one':'';
+      error.colors = pr.colors.length>=2 ? '':'Select atleast Two';
+      error.brand = pr.brand=='Select Brand' ?  'Select Brand' : '';
+      return !(error.image || error.brand || error.RAM || error.ROM || error.brand || error.colors);
+    }
+    function makeTextBox(id,lable,placeholder,value='',err=''){
+      let str='<div class="text-group">';
+      str+='<lable class="form-lable">'+lable+'</lable>';
+      str+='<input class="form-control" type="text" id="'+id+'" placeholder="'+placeholder+'" value="'+value+'">';
+      str+='</div>';
+      str+= err ? '<span class="text-danger">'+err+'</span>':'' ;
+      return str;
+    }
+    function makeDD(arr,id,selectedVal,value='',err=''){
+      let arr0=arr.map(ele=>{
+        let checked='';
+        if(value==ele)
+          checked='selected';
+        let str='<option '+checked+'>'+ele+'</option>';
+        return str;
+      });
+      let str='<br/><div class="form-checkbox"><select id="'+id+'"  class="form-control">';
+      str+='<option selected disabled>'+selectedVal+'</option>';
+      str+=arr0.join('');
+      str+='</select></div>';
+      str+= err ? '<span class="text-danger">'+err+'</span>' : '';
+      return str;
+    }
+    function makeCheckbox(arr,lable,name,value='',err=''){
+      let arr0=arr.map(ele=>{
+        let str='<div class="form-checkbox">';
+        let checked='';
+        for(i=0;i<value.length;i++)
+        if(ele==value[i])
+          checked='checked';
+        str+='<input type="checkbox" name="'+name+'" value="'+ele+'" '+checked+'>'+' '+ele;
+        checked='';
+        str+='</div>';
+        return str;
+      })
+      let head = '<div>'+lable+'</div>';
+      head+=arr0.join('');
+      head+= err ? '<div class="text-danger">'+err+'</div>' :'' ;
+      return head;
+    }
+    
+    </script>
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
